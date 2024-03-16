@@ -32,9 +32,14 @@ def validate():
 
 pg_html = '''
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
-<meta http-equiv="refresh" content="0; URL={url}" />
+    <meta http-equiv="refresh" content="0; URL={url}" />
+    <meta name="author" content="Sarah Brown" />
+    <meta property="og:title" content="{name}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{url}" />
+    <meta name="description" content="forwarding to {url}"/>
 </head>
 <body>
 This page should forward to <a href="{url}">{url}</a>
@@ -43,7 +48,7 @@ This page should forward to <a href="{url}">{url}</a>
 '''
 
 
-def files_from_dict(pages_to_create):
+def files_from_dict(pages_to_create,overwrite=True):
     '''
     given a dictionary, create html files
     
@@ -54,7 +59,12 @@ def files_from_dict(pages_to_create):
     
     '''
     for path, url in pages_to_create.items():
-        contents = pg_html.format(url=url)
-        os.mkdir(os.path.join('docs',path))
+        contents = pg_html.format(url=url,name=path)
+        out_path = os.path.join('docs',path)
+        # do not create if overwriting and already exists, otherwise create
+        if not(overwrite and os.path.exists(out_path)):
+            os.mkdir(out_path)
+
+        # write the file out
         with open(os.path.join('docs',path,'index.html'),'w') as f:
             f.write(contents)
