@@ -4,7 +4,8 @@ import os
 
 
 @click.command
-@click.argument('source-yaml',)
+@click.option('-s','--source-yaml',default='links.yml',
+              help='file name if not links.yml')
 
 
 def generate_links(source_yaml):
@@ -59,6 +60,9 @@ def files_from_dict(pages_to_create,overwrite=True):
     
     '''
     for path, url in pages_to_create.items():
+        if not(type(path) == str):
+            path = str(path)
+            
         contents = pg_html.format(url=url,name=path)
         out_path = os.path.join('docs',path)
         # do not create if overwriting and already exists, otherwise create
