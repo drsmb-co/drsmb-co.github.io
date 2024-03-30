@@ -32,7 +32,7 @@ jobs:
       - name: Install & build
       # TODO: modify to create template file
         run: |
-          pip install .
+          pip install git+https://github.com/brownsarahm/urlfwd.git
           mkdir docs
           genlinks -v
 

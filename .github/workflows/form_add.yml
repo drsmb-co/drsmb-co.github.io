@@ -36,7 +36,7 @@ jobs:
       - name: Install & build
       # TODO: modify to create template file
         run: |
-          pip install .
+          pip install git+https://github.com/brownsarahm/urlfwd.git
           mkdir docs
           addlink -l ${{ github.event.inputs.new_key }} -u  ${{ github.event.inputs.forward_url }} -b
 
