@@ -20,7 +20,7 @@ jobs:
       # TODO: modify to create template file
         run: |
           pip install .
-          genlinks
+          genlinks -v
           
 
 # Deploy job
