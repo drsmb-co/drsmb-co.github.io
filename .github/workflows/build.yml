@@ -1,4 +1,4 @@
-name: Make links
+name: Make links from source and deploy
 on:
   push:
     branches:
@@ -33,6 +33,7 @@ jobs:
       # TODO: modify to create template file
         run: |
           pip install .
+          mkdir docs
           genlinks -v
 
       - name: check working dir
