@@ -43,7 +43,6 @@ jobs:
     steps:
       - name: test
         run: |
-          pwd
           ls
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
