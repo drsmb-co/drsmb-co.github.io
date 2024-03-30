@@ -49,7 +49,7 @@ This page should forward to <a href="{url}">{url}</a>
 '''
 
 
-def files_from_dict(pages_to_create,overwrite=True):
+def files_from_dict(pages_to_create,overwrite=True,base_path='docs'):
     '''
     given a dictionary, create html files
     
@@ -62,13 +62,13 @@ def files_from_dict(pages_to_create,overwrite=True):
     for path, url in pages_to_create.items():
         if not(type(path) == str):
             path = str(path)
-            
+
         contents = pg_html.format(url=url,name=path)
-        out_path = os.path.join('docs',path)
+        out_path = os.path.join(base_path,path)
         # do not create if overwriting and already exists, otherwise create
         if not(overwrite and os.path.exists(out_path)):
             os.mkdir(out_path)
 
         # write the file out
-        with open(os.path.join('docs',path,'index.html'),'w') as f:
+        with open(os.path.join(out_path,'index.html'),'w') as f:
             f.write(contents)
