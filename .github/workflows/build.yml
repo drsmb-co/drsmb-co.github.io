@@ -33,8 +33,7 @@ jobs:
       # TODO: modify to create template file
         run: |
           pip install git+https://github.com/brownsarahm/urlfwd.git
-          mkdir docs
-          genlinks -v
+          genlinks -v -l
 
       - name: check working dir
         run: |
