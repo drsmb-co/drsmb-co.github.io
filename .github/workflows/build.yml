@@ -24,7 +24,7 @@ jobs:
           
 
 # Deploy job
-  deploy:
+  build_deploy:
     # Add a dependency to the build job
     needs: build
 
@@ -41,13 +41,27 @@ jobs:
     # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
-      - name: test
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Install & build
+      # TODO: modify to create template file
+        run: |
+          pip install .
+          genlinks -v
+
+      - name: check working dir
         run: |
           ls
+          
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with: 
-          path: "docs/"
+          path: "./docs/"
 
       - name: Deploy to GitHub Pages
         id: deployment
