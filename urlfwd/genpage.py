@@ -1,33 +1,6 @@
-import click 
-import yaml
 import os
 
 
-@click.command
-@click.option('-s','--source-yaml',default='links.yml',
-              help='file name if not links.yml')
-
-
-def generate_links(source_yaml):
-    '''
-    from a yaml source file create a set of toy files with file names as the keys
-    and the values as the content of each file
-
-    '''
-    # TODO: check file type and use different readers to accepts files other than yaml
-    # read file 
-    with open(source_yaml,'r') as f:
-        files_to_create = yaml.safe_load(f)
-
-    # call creator
-    files_from_dict(files_to_create)
-
-
-
-def validate():
-    '''
-    check that what's asked for is not
-    '''
 
 
 
@@ -35,12 +8,14 @@ pg_html = '''
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
+    <title>redirecting to {url}</title>
     <meta http-equiv="refresh" content="0; URL={url}" />
     <meta name="author" content="Sarah Brown" />
     <meta property="og:title" content="{name}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{url}" />
     <meta name="description" content="forwarding to {url}"/>
+    <link rel="canonical" href="{url}"/>
 </head>
 <body>
 This page should forward to <a href="{url}">{url}</a>
@@ -49,7 +24,7 @@ This page should forward to <a href="{url}">{url}</a>
 '''
 
 
-def files_from_dict(pages_to_create,overwrite=True,base_path='docs'):
+def files_from_dict(pages_to_create,overwrite=True,base_path='docs',logging=False):
     '''
     given a dictionary, create html files
     
@@ -59,16 +34,32 @@ def files_from_dict(pages_to_create,overwrite=True,base_path='docs'):
         keys are names of pages, values are urls to redirect to
     
     '''
+    if logging:
+        log = []
     for path, url in pages_to_create.items():
+        # handle case of numbers in key
         if not(type(path) == str):
             path = str(path)
 
         contents = pg_html.format(url=url,name=path)
-        out_path = os.path.join(base_path,path)
-        # do not create if overwriting and already exists, otherwise create
-        if not(overwrite and os.path.exists(out_path)):
-            os.mkdir(out_path)
+        out_dir = os.path.join(base_path,path)
+        out_file = os.path.join(out_dir,'index.html')
+        # do not create if overwriting and already exists, otherwise create 
+        #        (will error if exists and not overwriting)
+        if not(overwrite and os.path.exists(out_dir)):
+            os.mkdir(out_dir)
+            if logging:
+                log.append('creating ' + out_dir)
+
+        if logging and os.path.exists(out_file):
+            log.append('file exists')
 
         # write the file out
-        with open(os.path.join(out_path,'index.html'),'w') as f:
+        with open(out_file,'w') as f:
             f.write(contents)
+            if logging:
+                log.append('writing' + out_file)
+
+        if logging:
+            with open(os.path.join(out_dir,'log.txt'),'w') as f:
+                f.write('\n'.join(log))
