@@ -1,4 +1,4 @@
-name: Make links
+name: Add a link
 on:
   workflow_dispatch:
     inputs:
