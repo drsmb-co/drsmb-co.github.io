@@ -1,5 +1,6 @@
 import click 
 import yaml
+import subprocess
 
 from .genpage import files_from_dict
 from .manage_links import add_link,find_duplicate_keys
@@ -55,9 +56,11 @@ def generate_links(source_yaml,retain,out_path,verbose):
               help = 'force to overwrite an existing key')
 @click.option('-b','--build',is_flag=True,
               help = 'also rebuild')
+@click.option('-c','--commit',is_flag=True,
+              help = 'commit and push the links file')
 
 
-def add_short_link(url,short_link,yaml_file,force,build):
+def add_short_link(url,short_link,yaml_file,force,build, commit):
     '''
     add a new link with options or prompting
     '''
@@ -71,3 +74,9 @@ def add_short_link(url,short_link,yaml_file,force,build):
     # will return nothing if succeeds with no overwriteing, otherwise print
     if message:
         click.echo(message)
+
+    if commit:
+        commit_msg = '"add ' + short_link +'"'
+        subprocess.run(['git','add','links.yml'])
+        subprocess.run(['git','commit','-m',commit_msg])
+        subprocess.run(['git','push'])
