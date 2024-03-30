@@ -6,23 +6,6 @@ on:
 
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
-
-      - name: Install & run
-      # TODO: modify to create template file
-        run: |
-          pip install .
-          genlinks -v
-          
-
 # Deploy job
   build_deploy:
     # Add a dependency to the build job
@@ -57,7 +40,7 @@ jobs:
       - name: check working dir
         run: |
           ls
-          
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with: 
