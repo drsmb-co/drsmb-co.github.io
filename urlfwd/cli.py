@@ -12,9 +12,11 @@ from .manage_links import add_link,find_duplicate_keys
               help='retain existing (do not overwrite)')
 @click.option('-p','--out-path',default='docs',
               help='path to write files to default docs')
+@click.option('-v','--verbose',is_flag=True,
+              help='verbose mode, print details')
 
 
-def generate_links(source_yaml,retain,out_path):
+def generate_links(source_yaml,retain,out_path,verbose):
     '''
     from a yaml source file create a set of toy files with file names as the keys
     and the values as the content of each file
@@ -27,6 +29,9 @@ def generate_links(source_yaml,retain,out_path):
     if duplicated_keys:
         click.echo('Warning: the following keys are duplicated, only last one will be used:\n   ' +
                     '\n  '.join(duplicated_keys))
+    else:
+        if verbose:
+            click.echo('no duplicate keys')
 
     # read file 
     with open(source_yaml,'r') as f:
@@ -34,7 +39,9 @@ def generate_links(source_yaml,retain,out_path):
 
     overwrite = not(retain)
     # call creator
-    files_from_dict(files_to_create,overwrite,out_path)
+    log = files_from_dict(files_to_create,overwrite,out_path,logging=verbose)
+    if verbose and log:
+        click.echo(log)
 
 
 @click.command
@@ -48,6 +55,7 @@ def generate_links(source_yaml,retain,out_path):
               help = 'force to overwrite an existing key')
 @click.option('-b','--build',is_flag=True,
               help = 'also rebuild')
+
 
 def add_short_link(url,short_link,yaml_file,force,build):
     '''

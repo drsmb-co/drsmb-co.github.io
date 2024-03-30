@@ -46,20 +46,25 @@ def files_from_dict(pages_to_create,overwrite=True,base_path='docs',logging=Fals
         out_file = os.path.join(out_dir,'index.html')
         # do not create if overwriting and already exists, otherwise create 
         #        (will error if exists and not overwriting)
-        if not(overwrite and os.path.exists(out_dir)):
+        if not(os.path.exists(out_dir)):
             os.mkdir(out_dir)
             if logging:
                 log.append('creating ' + out_dir)
 
         if logging and os.path.exists(out_file):
-            log.append('file exists')
+            log.append(path + ' exists')
 
         # write the file out
-        with open(out_file,'w') as f:
-            f.write(contents)
+        if overwrite or not(os.path.exists(out_file)):
+            with open(out_file,'w') as f:
+                f.write(contents)
             if logging:
                 log.append('writing' + out_file)
 
-        if logging:
-            with open(os.path.join(out_dir,'log.txt'),'w') as f:
-                f.write('\n'.join(log))
+    # do at end
+    if logging:
+        # with open(os.path.join(out_dir,'log.txt'),'w') as f:
+        #     f.write('\n'.join(log))
+        return '\n'.join(log)
+    else:
+        return ''
