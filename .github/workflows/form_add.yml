@@ -10,8 +10,8 @@ on:
 
 
 jobs:
-# Deploy job
-  build_deploy:
+# Add the link to the links.yml
+  add_link:
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
       pages: write      # to deploy to Pages
@@ -67,12 +67,3 @@ jobs:
           # Optional. Prevents the shell from expanding filenames. 
           # Details: https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html
           disable_globbing: true
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with: 
-          path: "./docs/"
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
