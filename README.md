@@ -4,3 +4,5 @@ lightweight url forwarding via my [urlfwd package](https://github.com/brownsarah
 
 - auto build action if `links.yml` is edited locally or manually in browser.
 - form based action for setting a new one from web interface both adding to `links.yml` and rebuilding
+
+automatically generates forwarding urls and QR codes with landing pages at qr/key
