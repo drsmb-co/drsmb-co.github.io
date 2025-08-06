@@ -37,8 +37,8 @@ jobs:
       # TODO: modify to create template file
         run: |
           pip install git+https://github.com/brownsarahm/urlfwd.git
-          addlink -l ${{ github.event.inputs.new_key }} -u  ${{ github.event.inputs.forward_url }}
-          genlinks --landing 
+          urlfwd add -l ${{ github.event.inputs.new_key }} -u  ${{ github.event.inputs.forward_url }}
+          urlfwd gen links --landing 
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
