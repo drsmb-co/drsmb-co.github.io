@@ -1,4 +1,4 @@
-name: Make links from source and deploy
+name: Make links and QR codes from source and deploy
 on:
   push:
     branches:
@@ -30,12 +30,19 @@ jobs:
           python-version: 3.12
 
       - name: Install & build
-      # TODO: modify to create template file
         run: |
           pip install git+https://github.com/brownsarahm/urlfwd.git
-          genlinks -v -l
-          genqrs -f
 
+      - name: Build
+        run: |
+          urlfwd gen links -v -l
+    
+    # delete (or comment out with a # the `genqrs` line to not build the QR codes)
+      - name: Generate QRs
+        run: |
+          urlfwd gen qrs 
+
+# by default the html files will be generated to go to ta dcs folder
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with: 
@@ -44,4 +51,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-          
