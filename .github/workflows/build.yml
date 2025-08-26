@@ -40,7 +40,7 @@ jobs:
     # delete (or comment out with a # the `genqrs` line to not build the QR codes)
       - name: Generate QRs
         run: |
-          urlfwd gen qrs 
+          urlfwd gen qrs -f -v
 
 # by default the html files will be generated to go to ta dcs folder
       - name: Upload Pages artifact
